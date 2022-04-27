@@ -5,9 +5,10 @@ import { createApi } from 'unsplash-js'
 import Masonry from 'react-masonry-css'
 import NextImage from 'next/image'
 import Link from 'next/link'
+import axios from 'axios'
 
 function PhotosPage() {
-  const ACCESS = process.env.UNSPLASH_ACCESS_ID
+  const ACCESS = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_ID
 
   const baseURL = 'https://api.unsplash.com/users/halidislam/'
   const clientID = `client_id=${ACCESS}`
@@ -16,34 +17,33 @@ function PhotosPage() {
   const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const unsplash = createApi({
-    accessKey: 'VtBRCNVPaddBueKrJ7x-oTXu3fDbQiM_Y8PQ05_arcs',
-  })
+  const getPhotos = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://api.unsplash.com/users/halidislam/photos?client_id=${ACCESS}`
+      )
+      setPhotos(data)
+      setLoading(false)
+    } catch {
+      console.log('error')
+    }
+  }
 
   useEffect(() => {
-    unsplash.users.getPhotos({ username: 'halidislam' }).then((result) => {
-      if (result.errors) {
-        // handle error here
-        console.log('error occurred: ', result.errors[0])
-      } else {
-        const feed = result.response
-
-        // extract total and results array from response
-        const { total, results } = feed
-        setPhotos(results)
-        setLoading(false)
-        // handle success here
-        console.log(`received ${results.length} photos out of ${total}`)
-        console.log('first photo: ', results[0].urls)
-      }
-    })
+    getPhotos()
   }, [])
-  if (loading) {
+  if (!photos) {
     return <div>Loading...</div>
+  }
+  const breakpointColsObj = {
+    default: 3,
+    1024: 3,
+    720: 2,
+    500: 1,
   }
   return (
     <Masonry
-      breakpointCols={3}
+      breakpointCols={breakpointColsObj}
       className="my-masonry-grid"
       columnClassName="my-masonry-grid_column"
     >
@@ -58,7 +58,7 @@ function PhotosPage() {
               <a target="_blank">
                 <div className="cursor-pointer" key={`${item.id}`}>
                   <NextImage
-                    className="hover:skew-x-4 blur-[1px] transition-all hover:blur-none hover:brightness-110"
+                    className="hover:skew-x-4 transition-all  hover:brightness-110"
                     src={item.urls.regular}
                     alt={item.description}
                     width={item.width}
