@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Button from '../components/Button'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
+import classNames from '././../lib/classNames'
 
 const Header = () => {
   const { systemTheme, theme, setTheme } = useTheme()
@@ -17,8 +18,8 @@ const Header = () => {
       path: '/',
     },
     {
-      label: 'About',
-      path: '/about',
+      label: 'Photos',
+      path: '/photos',
     },
   ]
 
@@ -80,7 +81,12 @@ const Header = () => {
         {navigations.map((navigation) => (
           <li key={navigation.label}>
             <Link href={navigation.path}>
-              <a className="text-slate-600 transition-all hover:text-slate-800 dark:text-gray-400 dark:hover:text-gray-50">
+              <a
+                className={classNames(
+                  'text-slate-600 transition-all hover:text-[#3F72AF]',
+                  'dark:text-gray-400 dark:hover:text-[#00ADB5]'
+                )}
+              >
                 {navigation.label}
               </a>
             </Link>

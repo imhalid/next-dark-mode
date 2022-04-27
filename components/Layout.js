@@ -5,7 +5,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Next Tailwid Teheme</title>
+        <title>Next Tailwid Theme</title>
         <meta
           name="description"
           content="Create dark mode in Next and Tailwind"
