@@ -33,7 +33,8 @@ function PhotosPage() {
       src: data.urls.regular,
       width: data.width,
       height: data.height,
-      class: 'hover:brightness-110 transition-all',
+      class:
+        'hover:brightness-110 hover:scale-[0.97] saturate-0 hover:saturate-100 transition',
     }
   })
   return (
